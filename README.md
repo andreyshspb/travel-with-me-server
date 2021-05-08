@@ -1,30 +1,28 @@
-Создаем докер-сеть, через которую будет взаимодействовать база и сервер:
+## Описание 
+Сервер для работы приложениия [Travel-With-Me](https://github.com/MariaChizhova/Travel-With-Me).
+
+## Запуск
+Убедитесь, что у вас установлен докер.
 ```
-sudo docker network create travel-with-me
+sudo ./run.sh
 ```
 
-Запускаем контейнер, в котором будет работь база:
+Сервер будет доступен по адресу `http://localhost:9090/`.
+
+## Тестирование
+Добавим пользователя:
 ```
-sudo docker container run --name travel-with-me-mysql \ 
-                          --network travel-with-me \
-                          -e MYSQL_ROOT_PASSWORD=forever18 \
-                          -e MYSQL_DATABASE=travel_with_me \
-                          -d mysql
+curl -X POST http://localhost:9090/add_user?email=andrey.shein.spb@gmail.com
 ```
 
-Чуть-чуть подождите
-
-Создадим образ сервера: 
+Проверим, что он действительно существует:
 ```
-sudo docker image build -t travel-with-me-jdbc .
+curl -X GET http://localhost:9090/get_user?email=andrey.shein.spb@gmail.com
 ```
 
-Запускаем контейнер с сервером:
+Должно вывестись это: 
 ```
-sudo docker container run --network travel-with-me 
-                          --name travel-with-me-server 
-                          -p 9090:9090 
-                          -d travel-with-me-jdbc
+{"firstName":null,"lastName":null,"email":"andrey.shein.spb@gmail.com","avatar":null}
 ```
 
-Можно было воспользоваться `docker-compose`, но у меня не получилось =(
+## Работа 
