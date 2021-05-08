@@ -21,11 +21,14 @@ public class User {
     private int numberFollowers = 0;
     private int numberFollowing = 0;
 
-    public User() {
-    }
+    public User() {}
 
     public User(String email) {
         this.email = email;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -42,6 +45,14 @@ public class User {
 
     public String getAvatar() {
         return avatar;
+    }
+
+    public int getNumberFollowers() {
+        return numberFollowers;
+    }
+
+    public int getNumberFollowing() {
+        return numberFollowing;
     }
 
     public User setAvatar(String avatar) {

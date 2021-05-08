@@ -19,17 +19,17 @@ sudo ./run.sh
 # Тестирование
 Добавим пользователя:
 ```
-curl -X POST http://localhost:9090/add_user?email=andrey.shein.spb@gmail.com
+curl -X POST http://localhost:9090/add_user?email=elena.golovach@gmail.com
 ```
 
 Проверим, что он действительно существует:
 ```
-curl -X GET http://localhost:9090/get_user?email=andrey.shein.spb@gmail.com
+curl -X GET http://localhost:9090/get_user?email=elena.golovach@gmail.com
 ```
 
 Должно вывестись это: 
 ```
-{"firstName":null,"lastName":null,"email":"andrey.shein.spb@gmail.com","avatar":null}
+{"id":1,"firstName":null,"lastName":null,"email":"elena.golovach@gmail.com","avatar":null,"numberFollowers":0,"numberFollowing":0}
 ```
 
 # Работа 
