@@ -43,22 +43,22 @@ public class UserController {
         userService.editAvatar(userId, newAvatar);
     }
 
-    @PutMapping("/inc_number_followers/{userId}")
+    @PostMapping("/inc_number_followers/{userId}")
     public void incNumberFollowers(@PathVariable @NotNull Long userId) {
         userService.incNumberFollowers(userId);
     }
 
-    @PutMapping("/dec_number_followers/{userId}")
+    @PostMapping("/dec_number_followers/{userId}")
     public void decNumberFollowers(@PathVariable @NotNull Long userId) {
         userService.decNumberFollowers(userId);
     }
 
-    @PutMapping("/inc_number_followings/{userId}")
+    @PostMapping("/inc_number_followings/{userId}")
     public void incNumberFollowings(@PathVariable @NotNull Long userId) {
         userService.incNumberFollowings(userId);
     }
 
-    @PutMapping("/dec_number_followings/{userId}")
+    @PostMapping("/dec_number_followings/{userId}")
     public void decNumberFollowings(@PathVariable @NotNull Long userId) {
         userService.decNumberFollowings(userId);
     }
