@@ -10,6 +10,8 @@ import server.requests.MarkerCreateRequest;
 import server.requests.PostCreateRequest;
 import com.sun.istack.NotNull;
 import org.springframework.stereotype.Service;
+import server.responses.GetMarkerResponse;
+import server.responses.GetPostResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +52,14 @@ public class PostService {
         addMarkers(postCreateRequest.getMarkers(), post.getId());
     }
 
-    public List<Post> getPosts(@NotNull Long authorId) {
-        List<Post> posts = new ArrayList<>();
+    public List<GetPostResponse> getPosts(@NotNull Long authorId) {
+        List<GetPostResponse> posts = new ArrayList<>();
         for (var post : postRepository.findAllByAuthorId(authorId)) {
-            posts.add(post);
+            List<GetMarkerResponse> markers = new ArrayList<>();
+            for (Marker marker : markerRepository.findAllByPostId(post.getId())) {
+                markers.add(new GetMarkerResponse(marker));
+            }
+            posts.add(new GetPostResponse(post, markers));
         }
         return posts;
     }

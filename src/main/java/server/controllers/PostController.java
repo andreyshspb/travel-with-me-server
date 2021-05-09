@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.models.Post;
 import server.requests.PostCreateRequest;
+import server.responses.GetPostResponse;
 import server.services.PostService;
 import com.sun.istack.NotNull;
 
@@ -25,7 +26,7 @@ public class PostController {
     }
 
     @GetMapping("/get_posts/{authorId}")
-    public List<Post> getPosts(@PathVariable @NotNull Long authorId) {
+    public List<GetPostResponse> getPosts(@PathVariable @NotNull Long authorId) {
         return postService.getPosts(authorId);
     }
 
