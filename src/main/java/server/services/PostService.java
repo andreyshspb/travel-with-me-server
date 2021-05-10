@@ -14,6 +14,7 @@ import server.responses.GetMarkerResponse;
 import server.responses.GetPostResponse;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,14 +53,29 @@ public class PostService {
         addMarkers(postCreateRequest.getMarkers(), post.getId());
     }
 
+    public GetPostResponse getPost(@NotNull Long postId) {
+        Optional<Post> maybePost = postRepository.findById(postId);
+        if (maybePost.isPresent()) {
+            Post post = maybePost.get();
+            String picture = null;
+            if (post.getPictureName() != null) {
+                byte[] pictureInBytes = storageService.downloadFile(post.getPictureName());
+                picture = Base64.getEncoder().encodeToString(pictureInBytes);
+            }
+            return new GetPostResponse(post, getMarkers(post.getId()), picture);
+        }
+        return null;
+    }
+
     public List<GetPostResponse> getPosts(@NotNull Long authorId) {
         List<GetPostResponse> posts = new ArrayList<>();
         for (var post : postRepository.findAllByAuthorId(authorId)) {
-            List<GetMarkerResponse> markers = new ArrayList<>();
-            for (Marker marker : markerRepository.findAllByPostId(post.getId())) {
-                markers.add(new GetMarkerResponse(marker));
+            String picture = null;
+            if (post.getPictureName() != null) {
+                byte[] pictureInBytes = storageService.downloadFile(post.getPictureName());
+                picture = Base64.getEncoder().encodeToString(pictureInBytes);
             }
-            posts.add(new GetPostResponse(post, markers));
+            posts.add(new GetPostResponse(post, getMarkers(post.getId()), picture));
         }
         return posts;
     }
@@ -90,12 +106,20 @@ public class PostService {
             Marker marker = new Marker(markerRequest, postId, index);
             markerRepository.save(marker);
             for (var photo : markerRequest.getPhotos()) {
-                String pictureName = marker.getId().toString() + "_" + Integer.valueOf(index).toString();  // maybe fix
+                String pictureName = marker.getId().toString() + "_" + Integer.valueOf(index).toString();
                 storageService.uploadFile(pictureName, photo.getPhoto());
                 markerPhotoRepository.save(new MarkerPhoto(marker.getId(), pictureName));
             }
             index += 1;
         }
+    }
+
+    private List<GetMarkerResponse> getMarkers(Long postId) {
+        List<GetMarkerResponse> markers = new ArrayList<>();
+        for (Marker marker : markerRepository.findAllByPostId(postId)) {
+            markers.add(new GetMarkerResponse(marker));
+        }
+        return markers;
     }
 
 

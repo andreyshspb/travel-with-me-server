@@ -25,6 +25,11 @@ public class PostController {
         postService.addPost(postCreateRequest);
     }
 
+    @GetMapping("/get_post/{postId}")
+    public GetPostResponse getPost(@PathVariable @NotNull Long postId) {
+        return postService.getPost(postId);
+    }
+
     @GetMapping("/get_posts/{authorId}")
     public List<GetPostResponse> getPosts(@PathVariable @NotNull Long authorId) {
         return postService.getPosts(authorId);

@@ -10,17 +10,17 @@ public class GetPostResponse {
     private final Long authorId;
     private final String date;
     private final String description;
-    private final String pictureName;
+    private final String picture;
     private final int numberLikes;
 
     private final List<GetMarkerResponse> markers;
 
-    public GetPostResponse(Post post, List<GetMarkerResponse> markers) {
+    public GetPostResponse(Post post, List<GetMarkerResponse> markers, String picture) {
         this.postId = post.getId();
         this.authorId = post.getAuthorId();
         this.date = post.getDate();
         this.description = post.getDescription();
-        this.pictureName = post.getPictureName();
+        this.picture = picture;
         this.numberLikes = post.getNumberLikes();
         this.markers = markers;
     }
@@ -41,8 +41,8 @@ public class GetPostResponse {
         return description;
     }
 
-    public String getPictureName() {
-        return pictureName;
+    public String getPicture() {
+        return picture;
     }
 
     public int getNumberLikes() {
