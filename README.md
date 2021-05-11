@@ -11,8 +11,13 @@ mvn -Dmaven.test.skip=true install
 
 Теперь можно запускать сервер:
 ```
-sudo ./run.sh
+sudo docker-compose build 
+sudo docker-compose up
 ```
+
+На лог ошибок не обращайте внимания. Они возникают из-за того, что база не успевает
+проинициализироваться. 
+
 
 Сервер будет доступен по адресу `http://localhost:9090/`.
 
