@@ -32,7 +32,10 @@ public class UserService {
     }
 
     public void addUser(@NotNull String email) {
-        userRepository.save(new User(email));
+        Optional<User> maybeUser = userRepository.findByEmail(email);
+        if (maybeUser.isEmpty()) {
+            userRepository.save(new User(email));
+        }
     }
 
     public void editUser(@NotNull UserEditRequest editedUser) {
