@@ -30,6 +30,11 @@ public class PostController {
         return postService.getPost(postId);
     }
 
+    @GetMapping("/get_posts_ids/{authorId}")
+    public List<Long> getPostsIDs(@PathVariable @NotNull Long authorId) {
+        return postService.getPostsIDs(authorId);
+    }
+
     @GetMapping("/get_posts/{authorId}")
     public List<GetPostResponse> getPosts(@PathVariable @NotNull Long authorId) {
         return postService.getPosts(authorId);

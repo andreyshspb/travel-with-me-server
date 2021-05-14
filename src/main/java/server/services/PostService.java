@@ -13,10 +13,8 @@ import org.springframework.stereotype.Service;
 import server.responses.GetMarkerResponse;
 import server.responses.GetPostResponse;
 
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -68,16 +66,17 @@ public class PostService {
     }
 
     public List<GetPostResponse> getPosts(@NotNull Long authorId) {
-        List<GetPostResponse> posts = new ArrayList<>();
-        for (var post : postRepository.findAllByAuthorId(authorId)) {
-            String picture = null;
-            if (post.getPictureName() != null) {
-                byte[] pictureInBytes = storageService.downloadFile(post.getPictureName());
-                picture = Base64.getEncoder().encodeToString(pictureInBytes);
-            }
-            posts.add(new GetPostResponse(post, getMarkers(post.getId()), picture));
-        }
-        return posts;
+        return getPostsIDs(authorId).stream()
+                .map(this::getPost)
+                .collect(Collectors.toList());
+    }
+
+    public List<Long> getPostsIDs(@NotNull Long authorId) {
+        return postRepository.findAllByAuthorId(authorId).stream()
+                .mapToLong(Post::getId)
+                .boxed()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
     }
 
     public void editDescription(@NotNull Long postId, @NotNull String newDescription) {
