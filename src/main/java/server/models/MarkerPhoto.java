@@ -21,4 +21,16 @@ public class MarkerPhoto {
         this.markerId = markerId;
         this.keyName = keyName;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getMarkerId() {
+        return markerId;
+    }
+
+    public String getKeyName() {
+        return keyName;
+    }
 }

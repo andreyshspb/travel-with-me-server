@@ -116,7 +116,13 @@ public class PostService {
     private List<GetMarkerResponse> getMarkers(Long postId) {
         List<GetMarkerResponse> markers = new ArrayList<>();
         for (Marker marker : markerRepository.findAllByPostId(postId)) {
-            markers.add(new GetMarkerResponse(marker));
+            List<String> photos = new ArrayList<>();
+            for (MarkerPhoto photo : markerPhotoRepository.findAllByMarkerId(marker.getId())) {
+                byte[] pictureInBytes = storageService.downloadFile(photo.getKeyName());
+                String picture = Base64.getEncoder().encodeToString(pictureInBytes);
+                photos.add(picture);
+            }
+            markers.add(new GetMarkerResponse(marker, photos));
         }
         return markers;
     }

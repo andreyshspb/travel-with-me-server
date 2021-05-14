@@ -2,6 +2,8 @@ package server.responses;
 
 import server.models.Marker;
 
+import java.util.List;
+
 public class GetMarkerResponse {
 
     private final String name;
@@ -9,11 +11,14 @@ public class GetMarkerResponse {
     private final double latitude;
     private final double longitude;
 
-    public GetMarkerResponse(Marker marker) {
+    private final List<String> photos;
+
+    public GetMarkerResponse(Marker marker, List<String> photos) {
         this.name = marker.getName();
         this.description = marker.getDescription();
         this.latitude = marker.getLatitude();
         this.longitude = marker.getLongitude();
+        this.photos = photos;
     }
 
     public String getName() {
@@ -30,5 +35,9 @@ public class GetMarkerResponse {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public List<String> getPhotos() {
+        return photos;
     }
 }
