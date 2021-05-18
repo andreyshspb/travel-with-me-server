@@ -5,6 +5,7 @@ import server.repositories.UserRepository;
 import server.requests.UserEditRequest;
 import com.sun.istack.NotNull;
 import org.springframework.stereotype.Service;
+import server.responses.GetUserResponse;
 
 import java.util.Optional;
 
@@ -19,16 +20,22 @@ public class UserService {
         this.storageService = storageService;
     }
 
-    public User getUserById(@NotNull Long userId) {
-        return userRepository.findById(userId).orElse(null);
+    public GetUserResponse getUserById(@NotNull Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            String avatar = storageService.downloadFile(user.getAvatar());
+            return new GetUserResponse(user, avatar);
+        }
+        return null;
     }
 
-    public User getUser(@NotNull String email) {
-        return userRepository.findByEmail(email).orElse(null);
-    }
-
-    public byte[] getAvatar(@NotNull String keyName) {
-        return storageService.downloadFile(keyName);
+    public GetUserResponse getUser(@NotNull String email) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user != null) {
+            String avatar = storageService.downloadFile(user.getAvatar());
+            return new GetUserResponse(user, avatar);
+        }
+        return null;
     }
 
     public void addUser(@NotNull String email) {

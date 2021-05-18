@@ -6,6 +6,7 @@ import server.repositories.SubscribeRepository;
 import server.requests.SubscribeRequest;
 import com.sun.istack.NotNull;
 import org.springframework.stereotype.Service;
+import server.responses.GetUserResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +34,18 @@ public class SubscribeService {
         userService.decNumberFollowings(subscribeRequest.getFollowerId());
     }
 
-    public List<User> getFollowings(Long userId) {
-        Iterable<Subscribe> buffer = subscribeRepository.findAllByFollowerId(userId);
-        List<User> result = new ArrayList<>();
+    public List<GetUserResponse> getFollowings(Long userId) {
+        List<Subscribe> buffer = subscribeRepository.findAllByFollowerId(userId);
+        List<GetUserResponse> result = new ArrayList<>();
         for (var follower : buffer) {
             result.add(userService.getUserById(follower.getFollowingId()));
         }
         return result;
     }
 
-    public List<User> getFollowers(Long userId) {
-        Iterable<Subscribe> buffer = subscribeRepository.findAllByFollowerId(userId);
-        List<User> result = new ArrayList<>();
+    public List<GetUserResponse> getFollowers(Long userId) {
+        List<Subscribe> buffer = subscribeRepository.findAllByFollowerId(userId);
+        List<GetUserResponse> result = new ArrayList<>();
         for (var follower : buffer) {
             result.add(userService.getUserById(follower.getFollowerId()));
         }

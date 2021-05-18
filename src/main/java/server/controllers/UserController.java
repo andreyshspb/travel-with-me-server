@@ -3,6 +3,7 @@ package server.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import server.models.User;
 import server.requests.UserEditRequest;
+import server.responses.GetUserResponse;
 import server.services.UserService;
 import com.sun.istack.NotNull;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,8 @@ public class UserController {
     }
 
     @GetMapping("/get_user")
-    public User getUser(@RequestParam @NotNull String email) {
+    public GetUserResponse getUser(@RequestParam @NotNull String email) {
         return userService.getUser(email);
-    }
-
-    @GetMapping("/get_avatar")
-    public byte[] getAvatar(@RequestParam @NotNull String keyName) {
-        return userService.getAvatar(keyName);
     }
 
     @PostMapping("/add_user")

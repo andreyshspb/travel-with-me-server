@@ -25,17 +25,18 @@ public class StorageService {
 
     public void uploadFile(@NotNull String keyName, @NotNull String data) {
         try {
-            Path uploadFilePath = Files.createTempFile(keyName, "jpg");
+            Path uploadFilePath = Files.createTempFile(keyName, "png");
             byte[] bytes = Base64.getDecoder().decode(data);
             Files.write(uploadFilePath, bytes);
             client.putObject(bucketName, keyName, uploadFilePath.toFile());
         } catch (IOException ignored) {}
     }
 
-    public byte[] downloadFile(@NotNull String keyName) {
+    public String downloadFile(@NotNull String keyName) {
         S3Object object = client.getObject(bucketName, keyName);
         try {
-            return object.getObjectContent().readAllBytes();
+            byte[] bytes = object.getObjectContent().readAllBytes();
+            return Base64.getEncoder().encodeToString(bytes);
         } catch (IOException ignored) {}
         return null;
     }

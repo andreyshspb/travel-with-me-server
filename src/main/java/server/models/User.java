@@ -18,8 +18,8 @@ public class User {
     private String lastName = null;
     private String email = null;    // unchanged
     private String avatar = null;    // name file in the amazon s3 database
-    private int numberFollowers = 0;
-    private int numberFollowing = 0;
+    private int followersNumber = 0;
+    private int followingsNumber = 0;
 
     public User() {}
 
@@ -47,12 +47,12 @@ public class User {
         return avatar;
     }
 
-    public int getNumberFollowers() {
-        return numberFollowers;
+    public int getFollowersNumber() {
+        return followersNumber;
     }
 
-    public int getNumberFollowing() {
-        return numberFollowing;
+    public int getFollowingsNumber() {
+        return followingsNumber;
     }
 
     public User setAvatar(String avatar) {
@@ -67,22 +67,22 @@ public class User {
     }
 
     public User incNumberFollowers() {
-        this.numberFollowers++;
+        this.followersNumber++;
         return this;
     }
 
     public User decNumberFollowers() {
-        this.numberFollowers--;
+        this.followersNumber--;
         return this;
     }
 
     public User incNumberFollowing() {
-        this.numberFollowing++;
+        this.followingsNumber++;
         return this;
     }
 
     public User decNumberFollowing() {
-        this.numberFollowing--;
+        this.followingsNumber--;
         return this;
     }
 

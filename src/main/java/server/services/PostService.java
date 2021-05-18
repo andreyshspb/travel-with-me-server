@@ -57,8 +57,7 @@ public class PostService {
             Post post = maybePost.get();
             String picture = null;
             if (post.getPictureName() != null) {
-                byte[] pictureInBytes = storageService.downloadFile(post.getPictureName());
-                picture = Base64.getEncoder().encodeToString(pictureInBytes);
+                picture = storageService.downloadFile(post.getPictureName());
             }
             return new GetPostResponse(post, getMarkers(post.getId()), picture);
         }
@@ -118,8 +117,7 @@ public class PostService {
         for (Marker marker : markerRepository.findAllByPostId(postId)) {
             List<String> photos = new ArrayList<>();
             for (MarkerPhoto photo : markerPhotoRepository.findAllByMarkerId(marker.getId())) {
-                byte[] pictureInBytes = storageService.downloadFile(photo.getKeyName());
-                String picture = Base64.getEncoder().encodeToString(pictureInBytes);
+                String picture= storageService.downloadFile(photo.getKeyName());
                 photos.add(picture);
             }
             markers.add(new GetMarkerResponse(marker, photos));

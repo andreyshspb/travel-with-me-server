@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.models.User;
 import server.requests.SubscribeRequest;
+import server.responses.GetUserResponse;
 import server.services.SubscribeService;
 import com.sun.istack.NotNull;
 
@@ -30,12 +31,12 @@ public class SubscribeController {
     }
 
     @GetMapping("/get_followings/{userId}")
-    public List<User> getFollowings(@PathVariable @NotNull Long userId) {
+    public List<GetUserResponse> getFollowings(@PathVariable @NotNull Long userId) {
         return subscribeService.getFollowings(userId);
     }
 
     @GetMapping("/get_followers/{userId}")
-    public List<User> getFollowers(@PathVariable @NotNull Long userId) {
+    public List<GetUserResponse> getFollowers(@PathVariable @NotNull Long userId) {
         return subscribeService.getFollowers(userId);
     }
 
