@@ -31,12 +31,12 @@ public class SubscribeController {
     }
 
     @GetMapping("/get_followings/{userId}")
-    public List<GetUserResponse> getFollowings(@PathVariable @NotNull Long userId) {
+    public List<Long> getFollowings(@PathVariable @NotNull Long userId) {
         return subscribeService.getFollowings(userId);
     }
 
     @GetMapping("/get_followers/{userId}")
-    public List<GetUserResponse> getFollowers(@PathVariable @NotNull Long userId) {
+    public List<Long> getFollowers(@PathVariable @NotNull Long userId) {
         return subscribeService.getFollowers(userId);
     }
 

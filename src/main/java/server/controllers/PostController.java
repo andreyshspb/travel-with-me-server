@@ -2,7 +2,6 @@ package server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import server.models.Post;
 import server.requests.PostCreateRequest;
 import server.responses.GetPostResponse;
 import server.services.PostService;
@@ -30,14 +29,14 @@ public class PostController {
         return postService.getPost(postId);
     }
 
-    @GetMapping("/get_posts_ids/{authorId}")
-    public List<Long> getPostsIDs(@PathVariable @NotNull Long authorId) {
-        return postService.getPostsIDs(authorId);
+    @GetMapping("/get_posts/{authorId}")
+    public List<Long> getPosts(@PathVariable @NotNull Long authorId) {
+        return postService.getPosts(authorId);
     }
 
-    @GetMapping("/get_posts/{authorId}")
-    public List<GetPostResponse> getPosts(@PathVariable @NotNull Long authorId) {
-        return postService.getPosts(authorId);
+    @GetMapping("/get_followings_posts/{userID}")
+    public List<Long> getFollowingsPosts(@PathVariable @NotNull Long userID) {
+        return postService.getFollowingsPost(userID);
     }
 
     @PutMapping("/edit_description")

@@ -10,6 +10,7 @@ import server.responses.GetUserResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SubscribeService {
@@ -34,21 +35,15 @@ public class SubscribeService {
         userService.decNumberFollowings(subscribeRequest.getFollowerId());
     }
 
-    public List<GetUserResponse> getFollowings(Long userId) {
-        List<Subscribe> buffer = subscribeRepository.findAllByFollowerId(userId);
-        List<GetUserResponse> result = new ArrayList<>();
-        for (var follower : buffer) {
-            result.add(userService.getUserById(follower.getFollowingId()));
-        }
-        return result;
+    public List<Long> getFollowings(Long userID) {
+        return subscribeRepository.findAllByFollowerId(userID).stream()
+                .map(Subscribe::getFollowingId)
+                .collect(Collectors.toList());
     }
 
-    public List<GetUserResponse> getFollowers(Long userId) {
-        List<Subscribe> buffer = subscribeRepository.findAllByFollowerId(userId);
-        List<GetUserResponse> result = new ArrayList<>();
-        for (var follower : buffer) {
-            result.add(userService.getUserById(follower.getFollowerId()));
-        }
-        return result;
+    public List<Long> getFollowers(Long userID) {
+        return subscribeRepository.findAllByFollowingId(userID).stream()
+                .map(Subscribe::getFollowingId)
+                .collect(Collectors.toList());
     }
 }

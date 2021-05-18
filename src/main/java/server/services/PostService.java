@@ -23,13 +23,16 @@ public class PostService {
     private final MarkerRepository markerRepository;
     private final MarkerPhotoRepository markerPhotoRepository;
     private final StorageService storageService;
+    private final SubscribeService subscribeService;
 
     public PostService(PostRepository postRepository, MarkerRepository markerRepository,
-                       MarkerPhotoRepository markerPhotoRepository, StorageService storageService) {
+                       MarkerPhotoRepository markerPhotoRepository, StorageService storageService,
+                       SubscribeService subscribeService) {
         this.postRepository = postRepository;
         this.markerRepository = markerRepository;
         this.markerPhotoRepository = markerPhotoRepository;
         this.storageService = storageService;
+        this.subscribeService = subscribeService;
     }
 
     public void addPost(@NotNull PostCreateRequest postCreateRequest) {
@@ -64,18 +67,20 @@ public class PostService {
         return null;
     }
 
-    public List<GetPostResponse> getPosts(@NotNull Long authorId) {
-        return getPostsIDs(authorId).stream()
-                .map(this::getPost)
-                .collect(Collectors.toList());
-    }
-
-    public List<Long> getPostsIDs(@NotNull Long authorId) {
+    public List<Long> getPosts(@NotNull Long authorId) {
         return postRepository.findAllByAuthorId(authorId).stream()
                 .mapToLong(Post::getId)
                 .boxed()
                 .sorted(Comparator.reverseOrder())
                 .collect(Collectors.toList());
+    }
+
+    public List<Long> getFollowingsPost(@NotNull Long userID) {
+        List<Long> result = new ArrayList<>();
+        for (Long followingID : subscribeService.getFollowings(userID)) {
+            result.addAll(getPosts(followingID));
+        }
+        return result;
     }
 
     public void editDescription(@NotNull Long postId, @NotNull String newDescription) {
