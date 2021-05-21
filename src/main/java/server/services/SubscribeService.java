@@ -23,19 +23,30 @@ public class SubscribeService {
         this.userService = userService;
     }
 
+    public Subscribe getSubscribe(@NotNull Long followingID, @NotNull Long followerID) {
+        for (Subscribe sub : subscribeRepository.findAllByFollowingId(followingID)) {
+            if (followerID.equals(sub.getFollowerId())) {
+                return sub;
+            }
+        }
+        return null;
+    }
+
     public void addSubscribe(@NotNull Long followingID, @NotNull Long followerID) {
-        subscribeRepository.save(new Subscribe(followingID, followerID));
-        userService.incNumberFollowers(followingID);
-        userService.incNumberFollowings(followerID);
+        Subscribe sub = getSubscribe(followingID, followerID);
+        if (sub == null) {
+            subscribeRepository.save(new Subscribe(followingID, followerID));
+            userService.incNumberFollowers(followingID);
+            userService.incNumberFollowings(followerID);
+        }
     }
 
     public void deleteSubscribe(@NotNull Long followingID, @NotNull Long followerID) {
-        for (Subscribe sub : subscribeRepository.findAllByFollowingId(followingID)) {
-            if (followerID.equals(sub.getFollowerId())) {
-                subscribeRepository.deleteById(sub.getId());
-                userService.decNumberFollowers(followingID);
-                userService.decNumberFollowings(followerID);
-            }
+        Subscribe sub = getSubscribe(followingID, followerID);
+        if (sub != null) {
+            subscribeRepository.deleteById(sub.getId());
+            userService.decNumberFollowers(followingID);
+            userService.decNumberFollowings(followerID);
         }
     }
 
