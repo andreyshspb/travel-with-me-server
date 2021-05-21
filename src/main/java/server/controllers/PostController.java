@@ -30,13 +30,17 @@ public class PostController {
     }
 
     @GetMapping("/get_posts/{authorID}")
-    public List<Long> getPosts(@PathVariable @NotNull Long authorID) {
-        return postService.getPosts(authorID);
+    public List<GetPostResponse> getPosts(@PathVariable @NotNull Long authorID,
+                                          @RequestParam @NotNull Long offset,
+                                          @RequestParam @NotNull Long count) {
+        return postService.getPosts(authorID, offset, count);
     }
 
     @GetMapping("/get_followings_posts/{userID}")
-    public List<Long> getFollowingsPosts(@PathVariable @NotNull Long userID) {
-        return postService.getFollowingsPost(userID);
+    public List<GetPostResponse> getFollowingsPosts(@PathVariable @NotNull Long userID,
+                                         @RequestParam @NotNull Long offset,
+                                         @RequestParam @NotNull Long count) {
+        return postService.getFollowingsPost(userID, offset, count);
     }
 
     @PutMapping("/edit_description")

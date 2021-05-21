@@ -67,21 +67,25 @@ public class PostService {
         return null;
     }
 
-    public List<Long> getPosts(@NotNull Long authorID) {
+    public List<GetPostResponse> getPosts(@NotNull Long authorID, @NotNull Long offset, @NotNull Long count) {
         return postRepository.findAllByAuthorId(authorID).stream()
                 .mapToLong(Post::getId)
                 .boxed()
                 .sorted(Comparator.reverseOrder())
+                .skip(offset)
+                .limit(count)
+                .map(this::getPost)
                 .collect(Collectors.toList());
     }
 
-    public List<Long> getFollowingsPost(@NotNull Long userID) {
-        List<Long> buffer = new ArrayList<>();
+    public List<GetPostResponse> getFollowingsPost(@NotNull Long userID, @NotNull Long offset, @NotNull Long count) {
+        List<GetPostResponse> buffer = new ArrayList<>();
         for (Long followingID : subscribeService.getFollowings(userID)) {
-            buffer.addAll(getPosts(followingID));
+            buffer.addAll(getPosts(followingID, offset, count));
         }
         return buffer.stream()
-                .sorted(Comparator.reverseOrder())
+                .skip(offset)
+                .limit(count)
                 .collect(Collectors.toList());
     }
 
