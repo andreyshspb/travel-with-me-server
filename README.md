@@ -34,7 +34,7 @@ curl -X GET http://localhost:9090/get_user?email=elena.golovach@gmail.com
 
 Должно вывестись это: 
 ```
-{"id":1,"firstName":null,"lastName":null,"email":"elena.golovach@gmail.com","avatar":null,"numberFollowers":0,"numberFollowing":0}
+{"userID":1,"firstName":null,"lastName":null,"email":"elena.golovach@gmail.com","avatar":null,"followersNumber":0,"followingsNumber":0}
 ```
 
 # Работа 
