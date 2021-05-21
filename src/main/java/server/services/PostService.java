@@ -54,8 +54,8 @@ public class PostService {
         addMarkers(postCreateRequest.getMarkers(), post.getId());
     }
 
-    public GetPostResponse getPost(@NotNull Long postId) {
-        Optional<Post> maybePost = postRepository.findById(postId);
+    public GetPostResponse getPost(@NotNull Long postID) {
+        Optional<Post> maybePost = postRepository.findById(postID);
         if (maybePost.isPresent()) {
             Post post = maybePost.get();
             String picture = null;
@@ -67,8 +67,8 @@ public class PostService {
         return null;
     }
 
-    public List<Long> getPosts(@NotNull Long authorId) {
-        return postRepository.findAllByAuthorId(authorId).stream()
+    public List<Long> getPosts(@NotNull Long authorID) {
+        return postRepository.findAllByAuthorId(authorID).stream()
                 .mapToLong(Post::getId)
                 .boxed()
                 .sorted(Comparator.reverseOrder())
@@ -85,30 +85,30 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public void editDescription(@NotNull Long postId, @NotNull String newDescription) {
-        Optional<Post> post = postRepository.findById(postId);
+    public void editDescription(@NotNull Long postID, @NotNull String newDescription) {
+        Optional<Post> post = postRepository.findById(postID);
         post.ifPresent(value -> postRepository.save(value.setDescription(newDescription)));
     }
 
-    public void incNumberLikes(@NotNull Long postId) {
-        Optional<Post> post = postRepository.findById(postId);
+    public void incNumberLikes(@NotNull Long postID) {
+        Optional<Post> post = postRepository.findById(postID);
         post.ifPresent(value -> postRepository.save(value.incNumberLikes()));
     }
 
-    public void decNumberLikes(@NotNull Long postId) {
-        Optional<Post> post = postRepository.findById(postId);
+    public void decNumberLikes(@NotNull Long postID) {
+        Optional<Post> post = postRepository.findById(postID);
         post.ifPresent(value -> postRepository.save(value.decNumberLikes()));
     }
 
-    public void deletePost(@NotNull Long postId) {
-        postRepository.deleteById(postId);
+    public void deletePost(@NotNull Long postID) {
+        postRepository.deleteById(postID);
     }
 
 
-    private void addMarkers(Iterable<MarkerCreateRequest> markers, Long postId) {
+    private void addMarkers(Iterable<MarkerCreateRequest> markers, Long postID) {
         int index = 0;
         for (var markerRequest : markers) {
-            Marker marker = new Marker(markerRequest, postId, index);
+            Marker marker = new Marker(markerRequest, postID, index);
             markerRepository.save(marker);
             for (var photo : markerRequest.getPhotos()) {
                 String pictureName = marker.getId().toString() + "_" + Integer.valueOf(index).toString();
@@ -119,9 +119,9 @@ public class PostService {
         }
     }
 
-    private List<GetMarkerResponse> getMarkers(Long postId) {
+    private List<GetMarkerResponse> getMarkers(Long postID) {
         List<GetMarkerResponse> markers = new ArrayList<>();
-        for (Marker marker : markerRepository.findAllByPostId(postId)) {
+        for (Marker marker : markerRepository.findAllByPostId(postID)) {
             List<String> photos = new ArrayList<>();
             for (MarkerPhoto photo : markerPhotoRepository.findAllByMarkerId(marker.getId())) {
                 String picture= storageService.downloadFile(photo.getKeyName());

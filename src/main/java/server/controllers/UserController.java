@@ -33,29 +33,29 @@ public class UserController {
     }
 
     @PutMapping("/edit_avatar")
-    public void editAvatar(@RequestParam @NotNull Long userId,
+    public void editAvatar(@RequestParam @NotNull Long userID,
                            @RequestParam @NotNull String newAvatar) {
-        userService.editAvatar(userId, newAvatar);
+        userService.editAvatar(userID, newAvatar);
     }
 
-    @PostMapping("/inc_number_followers/{userId}")
-    public void incNumberFollowers(@PathVariable @NotNull Long userId) {
-        userService.incNumberFollowers(userId);
+    @PostMapping("/inc_number_followers/{userID}")
+    public void incNumberFollowers(@PathVariable @NotNull Long userID) {
+        userService.incNumberFollowers(userID);
     }
 
-    @PostMapping("/dec_number_followers/{userId}")
-    public void decNumberFollowers(@PathVariable @NotNull Long userId) {
-        userService.decNumberFollowers(userId);
+    @PostMapping("/dec_number_followers/{userID}")
+    public void decNumberFollowers(@PathVariable @NotNull Long userID) {
+        userService.decNumberFollowers(userID);
     }
 
-    @PostMapping("/inc_number_followings/{userId}")
-    public void incNumberFollowings(@PathVariable @NotNull Long userId) {
-        userService.incNumberFollowings(userId);
+    @PostMapping("/inc_number_followings/{userID}")
+    public void incNumberFollowings(@PathVariable @NotNull Long userID) {
+        userService.incNumberFollowings(userID);
     }
 
-    @PostMapping("/dec_number_followings/{userId}")
-    public void decNumberFollowings(@PathVariable @NotNull Long userId) {
-        userService.decNumberFollowings(userId);
+    @PostMapping("/dec_number_followings/{userID}")
+    public void decNumberFollowings(@PathVariable @NotNull Long userID) {
+        userService.decNumberFollowings(userID);
     }
 
 }

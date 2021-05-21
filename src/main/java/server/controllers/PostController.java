@@ -24,14 +24,14 @@ public class PostController {
         postService.addPost(postCreateRequest);
     }
 
-    @GetMapping("/get_post/{postId}")
-    public GetPostResponse getPost(@PathVariable @NotNull Long postId) {
-        return postService.getPost(postId);
+    @GetMapping("/get_post/{postID}")
+    public GetPostResponse getPost(@PathVariable @NotNull Long postID) {
+        return postService.getPost(postID);
     }
 
-    @GetMapping("/get_posts/{authorId}")
-    public List<Long> getPosts(@PathVariable @NotNull Long authorId) {
-        return postService.getPosts(authorId);
+    @GetMapping("/get_posts/{authorID}")
+    public List<Long> getPosts(@PathVariable @NotNull Long authorID) {
+        return postService.getPosts(authorID);
     }
 
     @GetMapping("/get_followings_posts/{userID}")
@@ -40,24 +40,24 @@ public class PostController {
     }
 
     @PutMapping("/edit_description")
-    public void editDescription(@RequestParam @NotNull Long postId,
+    public void editDescription(@RequestParam @NotNull Long postID,
                                 @RequestParam @NotNull String newDescription) {
-        postService.editDescription(postId, newDescription);
+        postService.editDescription(postID, newDescription);
     }
 
-    @PostMapping("/inc_post_number_likes/{postId}")
-    public void incNumberLikes(@PathVariable @NotNull Long postId) {
-        postService.incNumberLikes(postId);
+    @PostMapping("/inc_post_number_likes/{postID}")
+    public void incNumberLikes(@PathVariable @NotNull Long postID) {
+        postService.incNumberLikes(postID);
     }
 
-    @PostMapping("/dec_post_number_likes/{postId}")
-    public void decNumberLikes(@PathVariable @NotNull Long postId) {
-        postService.decNumberLikes(postId);
+    @PostMapping("/dec_post_number_likes/{postID}")
+    public void decNumberLikes(@PathVariable @NotNull Long postID) {
+        postService.decNumberLikes(postID);
     }
 
-    @DeleteMapping("/delete_post/{postId}")
-    public void deletePost(@PathVariable @NotNull Long postId) {
-        postService.deletePost(postId);
+    @DeleteMapping("/delete_post/{postID}")
+    public void deletePost(@PathVariable @NotNull Long postID) {
+        postService.deletePost(postID);
     }
 
 }

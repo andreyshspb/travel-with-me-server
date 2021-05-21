@@ -29,14 +29,14 @@ public class SubscribeController {
         subscribeService.deleteSubscribe(followingID, followerID);
     }
 
-    @GetMapping("/get_followings/{userId}")
-    public List<Long> getFollowings(@PathVariable @NotNull Long userId) {
-        return subscribeService.getFollowings(userId);
+    @GetMapping("/get_followings/{userID}")
+    public List<Long> getFollowings(@PathVariable @NotNull Long userID) {
+        return subscribeService.getFollowings(userID);
     }
 
-    @GetMapping("/get_followers/{userId}")
-    public List<Long> getFollowers(@PathVariable @NotNull Long userId) {
-        return subscribeService.getFollowers(userId);
+    @GetMapping("/get_followers/{userID}")
+    public List<Long> getFollowers(@PathVariable @NotNull Long userID) {
+        return subscribeService.getFollowers(userID);
     }
 
     @GetMapping("/recommend/{userID}")
