@@ -2,7 +2,6 @@ package server.services;
 
 import server.models.Subscribe;
 import server.repositories.SubscribeRepository;
-import server.requests.SubscribeRequest;
 import com.sun.istack.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +23,20 @@ public class SubscribeService {
         this.userService = userService;
     }
 
-    public void addSubscribe(@NotNull SubscribeRequest subscribeRequest) {
-        subscribeRepository.save(new Subscribe(subscribeRequest));
-        userService.incNumberFollowers(subscribeRequest.getFollowingId());
-        userService.incNumberFollowings(subscribeRequest.getFollowerId());
+    public void addSubscribe(@NotNull Long followingID, @NotNull Long followerID) {
+        subscribeRepository.save(new Subscribe(followingID, followerID));
+        userService.incNumberFollowers(followingID);
+        userService.incNumberFollowings(followerID);
     }
 
-    public void deleteSubscribe(@NotNull SubscribeRequest subscribeRequest) {
-        subscribeRepository.delete(new Subscribe(subscribeRequest));
-        userService.decNumberFollowers(subscribeRequest.getFollowingId());
-        userService.decNumberFollowings(subscribeRequest.getFollowerId());
+    public void deleteSubscribe(@NotNull Long followingID, @NotNull Long followerID) {
+        for (Subscribe sub : subscribeRepository.findAllByFollowingId(followingID)) {
+            if (followerID.equals(sub.getFollowerId())) {
+                subscribeRepository.deleteById(sub.getId());
+                userService.decNumberFollowers(followingID);
+                userService.decNumberFollowings(followerID);
+            }
+        }
     }
 
     public List<Long> getFollowings(Long userID) {

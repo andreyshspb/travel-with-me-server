@@ -2,7 +2,6 @@ package server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import server.requests.SubscribeRequest;
 import server.services.SubscribeService;
 import com.sun.istack.NotNull;
 
@@ -19,13 +18,15 @@ public class SubscribeController {
     }
 
     @PutMapping("/add_subscribe")
-    public void addSubscribe(@RequestBody @NotNull SubscribeRequest subscribeRequest) {
-        subscribeService.addSubscribe(subscribeRequest);
+    public void addSubscribe(@RequestParam @NotNull Long followingID,
+                             @RequestParam @NotNull Long followerID) {
+        subscribeService.addSubscribe(followingID, followerID);
     }
 
     @DeleteMapping("/delete_subscribe")
-    public void deleteSubscribe(@RequestBody @NotNull SubscribeRequest subscribeRequest) {
-        subscribeService.deleteSubscribe(subscribeRequest);
+    public void deleteSubscribe(@RequestParam @NotNull Long followingID,
+                                @RequestParam @NotNull Long followerID) {
+        subscribeService.deleteSubscribe(followingID, followerID);
     }
 
     @GetMapping("/get_followings/{userId}")

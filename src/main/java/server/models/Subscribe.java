@@ -1,7 +1,5 @@
 package server.models;
 
-import server.requests.SubscribeRequest;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,9 +17,13 @@ public class Subscribe {
 
     public Subscribe() {}
 
-    public Subscribe(SubscribeRequest subscribeRequest) {
-        this.followingId = subscribeRequest.getFollowingId();
-        this.followerId = subscribeRequest.getFollowerId();
+    public Subscribe(Long followingId, Long followerId) {
+        this.followingId = followingId;
+        this.followerId = followerId;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getFollowingId() {
