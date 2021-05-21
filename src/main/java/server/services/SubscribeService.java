@@ -98,6 +98,6 @@ public class SubscribeService {
 
     public Stream<Long> getFollowersIDs(@NotNull Long userID) {
         return subscribeRepository.findAllByFollowingId(userID).stream()
-                .map(Subscribe::getFollowingId);
+                .map(Subscribe::getFollowerId);
     }
 }

@@ -67,8 +67,8 @@ public class UserController {
 
     @GetMapping("/search")
     public List<GetUserResponse> search(@RequestParam @NotNull String message,
-                             @RequestParam @NotNull Long offset,
-                             @RequestParam @NotNull Long count) {
+                                        @RequestParam @NotNull Long offset,
+                                        @RequestParam @NotNull Long count) {
         return userService.search(message, offset, count);
     }
 
