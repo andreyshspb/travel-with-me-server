@@ -25,7 +25,7 @@ public class StorageService {
 
     public void uploadFile(@NotNull String keyName, @NotNull String data) {
         try {
-            Path uploadFilePath = Files.createTempFile(keyName, "png");
+            Path uploadFilePath = Files.createTempFile(keyName, null);
             byte[] bytes = Base64.getDecoder().decode(data);
             Files.write(uploadFilePath, bytes);
             client.putObject(bucketName, keyName, uploadFilePath.toFile());
