@@ -4,6 +4,7 @@ import server.models.Subscribe;
 import server.repositories.SubscribeRepository;
 import com.sun.istack.NotNull;
 import org.springframework.stereotype.Service;
+import server.responses.GetUserResponse;
 
 import java.util.Comparator;
 import java.util.List;
@@ -50,29 +51,39 @@ public class SubscribeService {
         }
     }
 
-    public List<Long> getFollowings(Long userID) {
+    public List<GetUserResponse> getFollowings(@NotNull Long userID,
+                                               @NotNull Long offset,
+                                               @NotNull Long count) {
         return subscribeRepository.findAllByFollowerId(userID).stream()
                 .map(Subscribe::getFollowingId)
+                .skip(offset)
+                .limit(count)
+                .map(userService::getUserById)
                 .collect(Collectors.toList());
     }
 
-    public List<Long> getFollowers(Long userID) {
+    public List<GetUserResponse> getFollowers(@NotNull Long userID,
+                                   @NotNull Long offset,
+                                   @NotNull Long count) {
         return subscribeRepository.findAllByFollowingId(userID).stream()
                 .map(Subscribe::getFollowingId)
+                .skip(offset)
+                .limit(count)
+                .map(userService::getUserById)
                 .collect(Collectors.toList());
     }
 
-    public List<Long> recommend(Long userID) {
-        Map<Long, Long> frequency = getFollowings(userID).stream()
-                .flatMap(id -> getFollowings(id).stream())
-                .filter(id -> !id.equals(userID))
-                .collect(Collectors.groupingBy(
-                        Function.identity(),
-                        Collectors.counting()
-                ));
-        return frequency.entrySet().stream()
-                .sorted(Comparator.comparingLong(entry -> -entry.getValue()))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-    }
+//    public List<Long> recommend(Long userID) {
+//        Map<Long, Long> frequency = getFollowings(userID).stream()
+//                .flatMap(id -> getFollowings(id).stream())
+//                .filter(id -> !id.equals(userID))
+//                .collect(Collectors.groupingBy(
+//                        Function.identity(),
+//                        Collectors.counting()
+//                ));
+//        return frequency.entrySet().stream()
+//                .sorted(Comparator.comparingLong(entry -> -entry.getValue()))
+//                .map(Map.Entry::getKey)
+//                .collect(Collectors.toList());
+//    }
 }

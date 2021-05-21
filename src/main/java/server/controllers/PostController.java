@@ -31,12 +31,12 @@ public class PostController {
         return postService.getPosts(authorID, offset, count);
     }
 
-    @GetMapping("/get_followings_posts")
-    public List<GetPostResponse> getFollowingsPosts(@RequestParam @NotNull Long userID,
-                                                    @RequestParam @NotNull Long offset,
-                                                    @RequestParam @NotNull Long count) {
-        return postService.getFollowingsPost(userID, offset, count);
-    }
+//    @GetMapping("/get_followings_posts")
+//    public List<GetPostResponse> getFollowingsPosts(@RequestParam @NotNull Long userID,
+//                                                    @RequestParam @NotNull Long offset,
+//                                                    @RequestParam @NotNull Long count) {
+//        return postService.getFollowingsPost(userID, offset, count);
+//    }
 
     @PutMapping("/edit_description")
     public void editDescription(@RequestParam @NotNull Long postID,

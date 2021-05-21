@@ -2,6 +2,7 @@ package server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import server.responses.GetUserResponse;
 import server.services.SubscribeService;
 import com.sun.istack.NotNull;
 
@@ -29,19 +30,23 @@ public class SubscribeController {
         subscribeService.deleteSubscribe(followingID, followerID);
     }
 
-    @GetMapping("/get_followings/{userID}")
-    public List<Long> getFollowings(@PathVariable @NotNull Long userID) {
-        return subscribeService.getFollowings(userID);
+    @GetMapping("/get_followings")
+    public List<GetUserResponse> getFollowings(@RequestParam @NotNull Long userID,
+                                               @RequestParam @NotNull Long offset,
+                                               @RequestParam @NotNull Long count) {
+        return subscribeService.getFollowings(userID, offset, count);
     }
 
-    @GetMapping("/get_followers/{userID}")
-    public List<Long> getFollowers(@PathVariable @NotNull Long userID) {
-        return subscribeService.getFollowers(userID);
+    @GetMapping("/get_followers")
+    public List<GetUserResponse> getFollowers(@RequestParam @NotNull Long userID,
+                                              @RequestParam @NotNull Long offset,
+                                              @RequestParam @NotNull Long count) {
+        return subscribeService.getFollowers(userID, offset, count);
     }
 
-    @GetMapping("/recommend/{userID}")
-    public List<Long> recommend(@PathVariable @NotNull Long userID) {
-        return subscribeService.recommend(userID);
-    }
+//    @GetMapping("/recommend/{userID}")
+//    public List<Long> recommend(@PathVariable @NotNull Long userID) {
+//        return subscribeService.recommend(userID);
+//    }
 
 }

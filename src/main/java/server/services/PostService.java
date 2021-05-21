@@ -78,22 +78,22 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public List<GetPostResponse> getFollowingsPost(@NotNull Long userID, @NotNull Long offset, @NotNull Long count) {
-        List<Long> buffer = new ArrayList<>();
-        for (Long followingID : subscribeService.getFollowings(userID)) {
-            buffer.addAll(
-                    postRepository.findAllByAuthorId(followingID).stream()
-                            .map(Post::getId)
-                            .collect(Collectors.toList())
-            );
-        }
-        return buffer.stream()
-                .sorted(Comparator.reverseOrder())
-                .skip(offset)
-                .limit(count)
-                .map(this::getPost)
-                .collect(Collectors.toList());
-    }
+//    public List<GetPostResponse> getFollowingsPost(@NotNull Long userID, @NotNull Long offset, @NotNull Long count) {
+//        List<Long> buffer = new ArrayList<>();
+//        for (Long followingID : subscribeService.getFollowings(userID)) {
+//            buffer.addAll(
+//                    postRepository.findAllByAuthorId(followingID).stream()
+//                            .map(Post::getId)
+//                            .collect(Collectors.toList())
+//            );
+//        }
+//        return buffer.stream()
+//                .sorted(Comparator.reverseOrder())
+//                .skip(offset)
+//                .limit(count)
+//                .map(this::getPost)
+//                .collect(Collectors.toList());
+//    }
 
     public void editDescription(@NotNull Long postID, @NotNull String newDescription) {
         Optional<Post> post = postRepository.findById(postID);
