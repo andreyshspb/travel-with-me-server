@@ -24,17 +24,17 @@ public class PostController {
         postService.addPost(postCreateRequest);
     }
 
-    @GetMapping("/get_posts/{authorID}")
-    public List<GetPostResponse> getPosts(@PathVariable @NotNull Long authorID,
+    @GetMapping("/get_posts")
+    public List<GetPostResponse> getPosts(@RequestParam @NotNull Long authorID,
                                           @RequestParam @NotNull Long offset,
                                           @RequestParam @NotNull Long count) {
         return postService.getPosts(authorID, offset, count);
     }
 
-    @GetMapping("/get_followings_posts/{userID}")
-    public List<GetPostResponse> getFollowingsPosts(@PathVariable @NotNull Long userID,
-                                         @RequestParam @NotNull Long offset,
-                                         @RequestParam @NotNull Long count) {
+    @GetMapping("/get_followings_posts")
+    public List<GetPostResponse> getFollowingsPosts(@RequestParam @NotNull Long userID,
+                                                    @RequestParam @NotNull Long offset,
+                                                    @RequestParam @NotNull Long count) {
         return postService.getFollowingsPost(userID, offset, count);
     }
 
