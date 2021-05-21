@@ -10,6 +10,7 @@ import server.responses.GetUserResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -88,7 +89,9 @@ public class UserService {
         user.ifPresent(value -> userRepository.save(value.decNumberFollowing()));
     }
 
-    public List<Long> search(@NotNull String message) {
+    public List<GetUserResponse> search(@NotNull String message,
+                                        @NotNull Long offset,
+                                        @NotNull Long count) {
         message = message.toLowerCase();
         List<Long> result = new ArrayList<>();
         for (User user : userRepository.findAll()) {
@@ -100,6 +103,10 @@ public class UserService {
                 result.add(user.getId());
             }
         }
-        return result;
+        return result.stream()
+                .skip(offset)
+                .limit(count)
+                .map(this::getUserById)
+                .collect(Collectors.toList());
     }
 }

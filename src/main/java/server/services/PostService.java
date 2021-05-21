@@ -15,6 +15,7 @@ import server.responses.GetPostResponse;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class PostService {
@@ -67,10 +68,15 @@ public class PostService {
         return null;
     }
 
-    public List<GetPostResponse> getPosts(@NotNull Long authorID, @NotNull Long offset, @NotNull Long count) {
+    private Stream<Long> getPostsIDs(@NotNull Long authorID) {
         return postRepository.findAllByAuthorId(authorID).stream()
-                .mapToLong(Post::getId)
-                .boxed()
+                .map(Post::getId);
+    }
+
+    public List<GetPostResponse> getPosts(@NotNull Long authorID,
+                                          @NotNull Long offset,
+                                          @NotNull Long count) {
+        return getPostsIDs(authorID)
                 .sorted(Comparator.reverseOrder())
                 .skip(offset)
                 .limit(count)
@@ -78,22 +84,17 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-//    public List<GetPostResponse> getFollowingsPost(@NotNull Long userID, @NotNull Long offset, @NotNull Long count) {
-//        List<Long> buffer = new ArrayList<>();
-//        for (Long followingID : subscribeService.getFollowings(userID)) {
-//            buffer.addAll(
-//                    postRepository.findAllByAuthorId(followingID).stream()
-//                            .map(Post::getId)
-//                            .collect(Collectors.toList())
-//            );
-//        }
-//        return buffer.stream()
-//                .sorted(Comparator.reverseOrder())
-//                .skip(offset)
-//                .limit(count)
-//                .map(this::getPost)
-//                .collect(Collectors.toList());
-//    }
+    public List<GetPostResponse> getFollowingsPost(@NotNull Long userID,
+                                                   @NotNull Long offset,
+                                                   @NotNull Long count) {
+        return subscribeService.getFollowingsIDs(userID)
+                .flatMap(this::getPostsIDs)
+                .sorted(Comparator.reverseOrder())
+                .skip(offset)
+                .limit(count)
+                .map(this::getPost)
+                .collect(Collectors.toList());
+    }
 
     public void editDescription(@NotNull Long postID, @NotNull String newDescription) {
         Optional<Post> post = postRepository.findById(postID);

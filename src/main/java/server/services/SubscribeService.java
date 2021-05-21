@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -54,8 +55,7 @@ public class SubscribeService {
     public List<GetUserResponse> getFollowings(@NotNull Long userID,
                                                @NotNull Long offset,
                                                @NotNull Long count) {
-        return subscribeRepository.findAllByFollowerId(userID).stream()
-                .map(Subscribe::getFollowingId)
+        return getFollowingsIDs(userID)
                 .skip(offset)
                 .limit(count)
                 .map(userService::getUserById)
@@ -63,27 +63,41 @@ public class SubscribeService {
     }
 
     public List<GetUserResponse> getFollowers(@NotNull Long userID,
-                                   @NotNull Long offset,
-                                   @NotNull Long count) {
-        return subscribeRepository.findAllByFollowingId(userID).stream()
-                .map(Subscribe::getFollowingId)
+                                              @NotNull Long offset,
+                                              @NotNull Long count) {
+        return getFollowersIDs(userID)
                 .skip(offset)
                 .limit(count)
                 .map(userService::getUserById)
                 .collect(Collectors.toList());
     }
 
-//    public List<Long> recommend(Long userID) {
-//        Map<Long, Long> frequency = getFollowings(userID).stream()
-//                .flatMap(id -> getFollowings(id).stream())
-//                .filter(id -> !id.equals(userID))
-//                .collect(Collectors.groupingBy(
-//                        Function.identity(),
-//                        Collectors.counting()
-//                ));
-//        return frequency.entrySet().stream()
-//                .sorted(Comparator.comparingLong(entry -> -entry.getValue()))
-//                .map(Map.Entry::getKey)
-//                .collect(Collectors.toList());
-//    }
+    public List<GetUserResponse> recommend(@NotNull Long userID,
+                                           @NotNull Long offset,
+                                           @NotNull Long count) {
+        Map<Long, Long> frequency = getFollowingsIDs(userID)
+                .flatMap(this::getFollowingsIDs)
+                .filter(id -> !id.equals(userID))
+                .collect(Collectors.groupingBy(
+                        Function.identity(),
+                        Collectors.counting()
+                ));
+        return frequency.entrySet().stream()
+                .sorted(Comparator.comparingLong(entry -> -entry.getValue()))
+                .map(Map.Entry::getKey)
+                .skip(offset)
+                .limit(count)
+                .map(userService::getUserById)
+                .collect(Collectors.toList());
+    }
+
+    public Stream<Long> getFollowingsIDs(@NotNull Long userID) {
+        return subscribeRepository.findAllByFollowerId(userID).stream()
+                .map(Subscribe::getFollowingId);
+    }
+
+    public Stream<Long> getFollowersIDs(@NotNull Long userID) {
+        return subscribeRepository.findAllByFollowingId(userID).stream()
+                .map(Subscribe::getFollowingId);
+    }
 }

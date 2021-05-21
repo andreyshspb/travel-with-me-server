@@ -44,9 +44,11 @@ public class SubscribeController {
         return subscribeService.getFollowers(userID, offset, count);
     }
 
-//    @GetMapping("/recommend/{userID}")
-//    public List<Long> recommend(@PathVariable @NotNull Long userID) {
-//        return subscribeService.recommend(userID);
-//    }
+    @GetMapping("/recommend")
+    public List<GetUserResponse> recommend(@RequestParam @NotNull Long userID,
+                                           @RequestParam @NotNull Long offset,
+                                           @RequestParam @NotNull Long count) {
+        return subscribeService.recommend(userID, offset, count);
+    }
 
 }
