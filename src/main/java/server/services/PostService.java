@@ -76,11 +76,13 @@ public class PostService {
     }
 
     public List<Long> getFollowingsPost(@NotNull Long userID) {
-        List<Long> result = new ArrayList<>();
+        List<Long> buffer = new ArrayList<>();
         for (Long followingID : subscribeService.getFollowings(userID)) {
-            result.addAll(getPosts(followingID));
+            buffer.addAll(getPosts(followingID));
         }
-        return result;
+        return buffer.stream()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
     }
 
     public void editDescription(@NotNull Long postId, @NotNull String newDescription) {
