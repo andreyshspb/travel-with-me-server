@@ -1,7 +1,6 @@
 package server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import server.models.User;
 import server.requests.UserEditRequest;
 import server.responses.GetUserResponse;
 import server.services.UserService;

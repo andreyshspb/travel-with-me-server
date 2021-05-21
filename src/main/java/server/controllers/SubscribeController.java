@@ -2,9 +2,7 @@ package server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import server.models.User;
 import server.requests.SubscribeRequest;
-import server.responses.GetUserResponse;
 import server.services.SubscribeService;
 import com.sun.istack.NotNull;
 

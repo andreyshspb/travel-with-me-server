@@ -1,20 +1,17 @@
 package server.services;
 
-import org.apache.logging.log4j.util.PropertySource;
 import server.models.Subscribe;
-import server.models.User;
 import server.repositories.SubscribeRepository;
 import server.requests.SubscribeRequest;
 import com.sun.istack.NotNull;
 import org.springframework.stereotype.Service;
-import server.responses.GetUserResponse;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 
 @Service
 public class SubscribeService {
