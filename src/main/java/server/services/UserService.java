@@ -32,7 +32,10 @@ public class UserService {
     public GetUserResponse getUser(@NotNull String email) {
         User user = userRepository.findByEmail(email).orElse(null);
         if (user != null) {
-            String avatar = storageService.downloadFile(user.getAvatar());
+            String avatar = null;
+            if (user.getAvatar() != null) {
+                avatar = storageService.downloadFile(user.getAvatar());
+            }
             return new GetUserResponse(user, avatar);
         }
         return null;

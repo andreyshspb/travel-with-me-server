@@ -20,7 +20,7 @@ public class SubscribeController {
         this.subscribeService = subscribeService;
     }
 
-    @PostMapping("/add_subscribe")
+    @PutMapping("/add_subscribe")
     public void addSubscribe(@RequestBody @NotNull SubscribeRequest subscribeRequest) {
         subscribeService.addSubscribe(subscribeRequest);
     }
@@ -38,6 +38,11 @@ public class SubscribeController {
     @GetMapping("/get_followers/{userId}")
     public List<Long> getFollowers(@PathVariable @NotNull Long userId) {
         return subscribeService.getFollowers(userId);
+    }
+
+    @GetMapping("/recommend/{userID}")
+    public List<Long> recommend(@PathVariable @NotNull Long userID) {
+        return subscribeService.recommend(userID);
     }
 
 }
