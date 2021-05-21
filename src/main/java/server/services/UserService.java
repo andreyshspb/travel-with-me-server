@@ -7,6 +7,8 @@ import com.sun.istack.NotNull;
 import org.springframework.stereotype.Service;
 import server.responses.GetUserResponse;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -86,4 +88,18 @@ public class UserService {
         user.ifPresent(value -> userRepository.save(value.decNumberFollowing()));
     }
 
+    public List<Long> search(@NotNull String message) {
+        message = message.toLowerCase();
+        List<Long> result = new ArrayList<>();
+        for (User user : userRepository.findAll()) {
+            String pattern1 = user.getFirstName() + user.getLastName();
+            pattern1 = pattern1.toLowerCase();
+            String pattern2 = user.getLastName() + user.getFirstName();
+            pattern2 = pattern2.toLowerCase();
+            if (pattern1.contains(message) || pattern2.contains(message)) {
+                result.add(user.getId());
+            }
+        }
+        return result;
+    }
 }

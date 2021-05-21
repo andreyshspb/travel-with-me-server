@@ -7,6 +7,8 @@ import server.services.UserService;
 import com.sun.istack.NotNull;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class UserController {
 
@@ -20,6 +22,11 @@ public class UserController {
     @GetMapping("/get_user")
     public GetUserResponse getUser(@RequestParam @NotNull String email) {
         return userService.getUser(email);
+    }
+
+    @GetMapping("/get_user/{userID}")
+    public GetUserResponse getUserByID(@PathVariable @NotNull Long userID) {
+        return userService.getUserById(userID);
     }
 
     @PostMapping("/add_user")
@@ -56,6 +63,11 @@ public class UserController {
     @PostMapping("/dec_number_followings/{userID}")
     public void decNumberFollowings(@PathVariable @NotNull Long userID) {
         userService.decNumberFollowings(userID);
+    }
+
+    @GetMapping("/search")
+    public List<Long> search(@RequestParam @NotNull String message) {
+        return userService.search(message);
     }
 
 }
