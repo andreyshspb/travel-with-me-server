@@ -54,7 +54,7 @@ public class PostService {
         addMarkers(postCreateRequest.getMarkers(), post.getId());
     }
 
-    public GetPostResponse getPost(@NotNull Long postID) {
+    private GetPostResponse getPost(@NotNull Long postID) {
         Optional<Post> maybePost = postRepository.findById(postID);
         if (maybePost.isPresent()) {
             Post post = maybePost.get();
@@ -79,13 +79,19 @@ public class PostService {
     }
 
     public List<GetPostResponse> getFollowingsPost(@NotNull Long userID, @NotNull Long offset, @NotNull Long count) {
-        List<GetPostResponse> buffer = new ArrayList<>();
+        List<Long> buffer = new ArrayList<>();
         for (Long followingID : subscribeService.getFollowings(userID)) {
-            buffer.addAll(getPosts(followingID, offset, count));
+            buffer.addAll(
+                    postRepository.findAllByAuthorId(followingID).stream()
+                            .map(Post::getId)
+                            .collect(Collectors.toList())
+            );
         }
         return buffer.stream()
+                .sorted(Comparator.reverseOrder())
                 .skip(offset)
                 .limit(count)
+                .map(this::getPost)
                 .collect(Collectors.toList());
     }
 
