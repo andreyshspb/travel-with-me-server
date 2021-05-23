@@ -34,9 +34,12 @@ public class SubscribeService {
         return null;
     }
 
+    public Boolean existingSubscribe(@NotNull Long followingID, @NotNull Long followerID) {
+        return getSubscribe(followingID, followerID) != null;
+    }
+
     public void addSubscribe(@NotNull Long followingID, @NotNull Long followerID) {
-        Subscribe sub = getSubscribe(followingID, followerID);
-        if (sub == null) {
+        if (!existingSubscribe(followingID, followerID)) {
             subscribeRepository.save(new Subscribe(followingID, followerID));
             userService.incNumberFollowers(followingID);
             userService.incNumberFollowings(followerID);

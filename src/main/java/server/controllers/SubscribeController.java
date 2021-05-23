@@ -8,6 +8,7 @@ import com.sun.istack.NotNull;
 
 import java.util.List;
 
+
 @RestController
 public class SubscribeController {
 
@@ -28,6 +29,12 @@ public class SubscribeController {
     public void deleteSubscribe(@RequestParam @NotNull Long followingID,
                                 @RequestParam @NotNull Long followerID) {
         subscribeService.deleteSubscribe(followingID, followerID);
+    }
+
+    @GetMapping("/existing_subscribe")
+    public Boolean existingSubscribe(@RequestParam @NotNull Long followingID,
+                                     @RequestParam @NotNull Long followerID) {
+        return subscribeService.existingSubscribe(followingID, followerID);
     }
 
     @GetMapping("/get_followings")
