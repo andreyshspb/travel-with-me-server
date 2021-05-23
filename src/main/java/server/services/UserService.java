@@ -7,19 +7,20 @@ import com.sun.istack.NotNull;
 import org.springframework.stereotype.Service;
 import server.responses.GetUserResponse;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final SubscribeService subscribeService;
     private final StorageService storageService;
 
-    public UserService(UserRepository userRepository, StorageService storageService) {
+    public UserService(UserRepository userRepository, SubscribeService subscribeService,
+                       StorageService storageService) {
         this.userRepository = userRepository;
+        this.subscribeService = subscribeService;
         this.storageService = storageService;
     }
 
@@ -88,20 +89,32 @@ public class UserService {
         user.ifPresent(value -> userRepository.save(value.decNumberFollowing()));
     }
 
-    public List<GetUserResponse> search(@NotNull String message,
+    public List<GetUserResponse> search(@NotNull Long myID,
+                                        @NotNull String message,
                                         @NotNull Long offset,
                                         @NotNull Long count) {
         message = message.toLowerCase();
-        List<Long> result = new ArrayList<>();
+
+        List<Long> suitable = new ArrayList<>();
         for (User user : userRepository.findAll()) {
             String pattern1 = user.getFirstName() + user.getLastName();
             pattern1 = pattern1.toLowerCase();
             String pattern2 = user.getLastName() + user.getFirstName();
             pattern2 = pattern2.toLowerCase();
             if (pattern1.contains(message) || pattern2.contains(message)) {
-                result.add(user.getId());
+                suitable.add(user.getId());
             }
         }
+
+        Deque<Long> result = new LinkedList<>();
+        for (Long id : suitable) {
+            if (subscribeService.existingSubscribe(id, myID)) {
+                result.addFirst(id);
+            } else {
+                result.addLast(id);
+            }
+        }
+
         return result.stream()
                 .skip(offset)
                 .limit(count)
