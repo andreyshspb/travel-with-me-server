@@ -2,6 +2,7 @@ package server.services;
 
 import server.models.User;
 import server.repositories.UserRepository;
+import server.requests.AvatarEditRequest;
 import server.requests.UserEditRequest;
 import com.sun.istack.NotNull;
 import org.springframework.stereotype.Service;
@@ -56,16 +57,16 @@ public class UserService {
         user.ifPresent(value -> userRepository.save(value.setAll(editedUser)));
     }
 
-    public void editAvatar(@NotNull Long userID, @NotNull String newAvatar) {
+    public void editAvatar(@NotNull AvatarEditRequest avatarEditRequest) {
         // name avatar in the amazon s3 database
-        String avatarName = "avatar_" + userID;
+        String avatarName = "avatar_" + avatarEditRequest.getUserId();
 
         // add changes to amazon s3 database
         storageService.removeFile(avatarName);
-        storageService.uploadFile(avatarName, newAvatar);
+        storageService.uploadFile(avatarName, avatarEditRequest.getAvatar());
 
         // add changes to mysql database
-        Optional<User> user = userRepository.findById(userID);
+        Optional<User> user = userRepository.findById(avatarEditRequest.getUserId());
         user.ifPresent(value -> userRepository.save(value.setAvatar(avatarName)));
     }
 

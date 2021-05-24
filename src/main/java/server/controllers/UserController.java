@@ -1,6 +1,7 @@
 package server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import server.requests.AvatarEditRequest;
 import server.requests.UserEditRequest;
 import server.responses.GetUserResponse;
 import server.services.UserService;
@@ -40,9 +41,8 @@ public class UserController {
     }
 
     @PutMapping("/edit_avatar")
-    public void editAvatar(@RequestParam @NotNull Long userID,
-                           @RequestParam @NotNull String newAvatar) {
-        userService.editAvatar(userID, newAvatar);
+    public void editAvatar(@RequestBody @NotNull AvatarEditRequest avatarEditRequest) {
+        userService.editAvatar(avatarEditRequest);
     }
 
     @PostMapping("/inc_number_followers/{userID}")
