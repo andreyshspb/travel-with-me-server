@@ -1,5 +1,6 @@
 package server.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import server.models.Marker;
 import server.models.MarkerPhoto;
 import server.models.Post;
@@ -26,6 +27,7 @@ public class PostService {
     private final StorageService storageService;
     private final SubscribeService subscribeService;
 
+    @Autowired
     public PostService(PostRepository postRepository, MarkerRepository markerRepository,
                        MarkerPhotoRepository markerPhotoRepository, StorageService storageService,
                        SubscribeService subscribeService) {

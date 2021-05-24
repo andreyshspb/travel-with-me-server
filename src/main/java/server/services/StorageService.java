@@ -3,6 +3,7 @@ package server.services;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
 import com.sun.istack.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class StorageService {
 
     private final AmazonS3 client;
 
+    @Autowired
     public StorageService(AmazonS3 client) {
         this.client = client;
     }

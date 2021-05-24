@@ -1,5 +1,6 @@
 package server.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import server.models.Subscribe;
 import server.repositories.SubscribeRepository;
 import com.sun.istack.NotNull;
@@ -20,6 +21,7 @@ public class SubscribeService {
     private final SubscribeRepository subscribeRepository;
     private final UserService userService;
 
+    @Autowired
     public SubscribeService(SubscribeRepository subscribeRepository, UserService userService) {
         this.subscribeRepository = subscribeRepository;
         this.userService = userService;

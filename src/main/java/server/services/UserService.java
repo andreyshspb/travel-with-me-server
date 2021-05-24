@@ -1,5 +1,6 @@
 package server.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import server.models.User;
 import server.repositories.UserRepository;
 import server.requests.AvatarEditRequest;
@@ -18,6 +19,7 @@ public class UserService {
     private final SubscribeService subscribeService;
     private final StorageService storageService;
 
+    @Autowired
     public UserService(UserRepository userRepository, SubscribeService subscribeService,
                        StorageService storageService) {
         this.userRepository = userRepository;
