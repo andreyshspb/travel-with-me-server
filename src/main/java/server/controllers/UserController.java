@@ -8,8 +8,6 @@ import server.services.UserService;
 import com.sun.istack.NotNull;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 public class UserController {
 
@@ -63,14 +61,6 @@ public class UserController {
     @PostMapping("/dec_number_followings/{userID}")
     public void decNumberFollowings(@PathVariable @NotNull Long userID) {
         userService.decNumberFollowings(userID);
-    }
-
-    @GetMapping("/search")
-    public List<GetUserResponse> search(@RequestParam @NotNull Long myID,
-                                        @RequestParam @NotNull String message,
-                                        @RequestParam @NotNull Long offset,
-                                        @RequestParam @NotNull Long count) {
-        return userService.search(myID, message, offset, count);
     }
 
 }

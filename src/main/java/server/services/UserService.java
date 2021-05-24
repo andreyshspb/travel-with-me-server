@@ -10,21 +10,22 @@ import org.springframework.stereotype.Service;
 import server.responses.GetUserResponse;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final SubscribeService subscribeService;
     private final StorageService storageService;
 
     @Autowired
-    public UserService(UserRepository userRepository, SubscribeService subscribeService,
-                       StorageService storageService) {
+    public UserService(UserRepository userRepository, StorageService storageService) {
         this.userRepository = userRepository;
-        this.subscribeService = subscribeService;
         this.storageService = storageService;
+    }
+
+    public Iterable<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public GetUserResponse getUserById(@NotNull Long userID) {
@@ -90,38 +91,5 @@ public class UserService {
     public void decNumberFollowings(@NotNull Long userID) {
         Optional<User> user = userRepository.findById(userID);
         user.ifPresent(value -> userRepository.save(value.decNumberFollowing()));
-    }
-
-    public List<GetUserResponse> search(@NotNull Long myID,
-                                        @NotNull String message,
-                                        @NotNull Long offset,
-                                        @NotNull Long count) {
-        message = message.toLowerCase();
-
-        List<Long> suitable = new ArrayList<>();
-        for (User user : userRepository.findAll()) {
-            String pattern1 = user.getFirstName() + user.getLastName();
-            pattern1 = pattern1.toLowerCase();
-            String pattern2 = user.getLastName() + user.getFirstName();
-            pattern2 = pattern2.toLowerCase();
-            if (pattern1.contains(message) || pattern2.contains(message)) {
-                suitable.add(user.getId());
-            }
-        }
-
-        Deque<Long> result = new LinkedList<>();
-        for (Long id : suitable) {
-            if (subscribeService.existingSubscribe(id, myID)) {
-                result.addFirst(id);
-            } else {
-                result.addLast(id);
-            }
-        }
-
-        return result.stream()
-                .skip(offset)
-                .limit(count)
-                .map(this::getUserById)
-                .collect(Collectors.toList());
     }
 }
