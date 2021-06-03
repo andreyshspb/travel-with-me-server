@@ -40,7 +40,7 @@ public class PostService {
         this.postLikeService = postLikeService;
     }
 
-    public void addPost(@NotNull PostCreateRequest postCreateRequest) {
+    public Long addPost(@NotNull PostCreateRequest postCreateRequest) {
         String pictureName = null;
         if (postCreateRequest.getPicture() != null) {
             // name in the amazon s3 database
@@ -57,6 +57,8 @@ public class PostService {
 
         // add marker to mysql
         addMarkers(postCreateRequest.getMarkers(), post.getId());
+
+        return post.getId();
     }
 
     private GetPostResponse getPost(@NotNull Long postID) {

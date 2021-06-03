@@ -20,8 +20,8 @@ public class PostController {
     }
 
     @PostMapping("/add_post")
-    public void addPost(@RequestBody @NotNull PostCreateRequest postCreateRequest) {
-        postService.addPost(postCreateRequest);
+    public Long addPost(@RequestBody @NotNull PostCreateRequest postCreateRequest) {
+        return postService.addPost(postCreateRequest);
     }
 
     @GetMapping("/get_posts")
