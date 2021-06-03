@@ -44,14 +44,22 @@ public class PostController {
         postService.editDescription(postID, newDescription);
     }
 
-    @PostMapping("/inc_post_number_likes/{postID}")
-    public void incNumberLikes(@PathVariable @NotNull Long postID) {
-        postService.incNumberLikes(postID);
+    @PostMapping("/inc_post_number_likes")
+    public void incNumberLikes(@RequestParam @NotNull Long postID,
+                               @RequestParam @NotNull Long userID) {
+        postService.incNumberLikes(postID, userID);
     }
 
-    @PostMapping("/dec_post_number_likes/{postID}")
-    public void decNumberLikes(@PathVariable @NotNull Long postID) {
-        postService.decNumberLikes(postID);
+    @PostMapping("/dec_post_number_likes")
+    public void decNumberLikes(@RequestParam @NotNull Long postID,
+                               @RequestParam @NotNull Long userID) {
+        postService.decNumberLikes(postID, userID);
+    }
+
+    @GetMapping("/like_exists")
+    public boolean likeExists(@RequestParam @NotNull Long postID,
+                              @RequestParam @NotNull Long userID) {
+        return postService.likeExists(postID, userID);
     }
 
     @DeleteMapping("/delete_post/{postID}")

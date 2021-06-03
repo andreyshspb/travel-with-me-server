@@ -26,16 +26,18 @@ public class PostService {
     private final MarkerPhotoRepository markerPhotoRepository;
     private final StorageService storageService;
     private final SubscribeService subscribeService;
+    private final PostLikeService postLikeService;
 
     @Autowired
     public PostService(PostRepository postRepository, MarkerRepository markerRepository,
                        MarkerPhotoRepository markerPhotoRepository, StorageService storageService,
-                       SubscribeService subscribeService) {
+                       SubscribeService subscribeService, PostLikeService postLikeService) {
         this.postRepository = postRepository;
         this.markerRepository = markerRepository;
         this.markerPhotoRepository = markerPhotoRepository;
         this.storageService = storageService;
         this.subscribeService = subscribeService;
+        this.postLikeService = postLikeService;
     }
 
     public void addPost(@NotNull PostCreateRequest postCreateRequest) {
@@ -103,14 +105,20 @@ public class PostService {
         post.ifPresent(value -> postRepository.save(value.setDescription(newDescription)));
     }
 
-    public void incNumberLikes(@NotNull Long postID) {
+    public void incNumberLikes(@NotNull Long postID, @NotNull Long userID) {
         Optional<Post> post = postRepository.findById(postID);
         post.ifPresent(value -> postRepository.save(value.incNumberLikes()));
+        postLikeService.addLike(postID, userID);
     }
 
-    public void decNumberLikes(@NotNull Long postID) {
+    public void decNumberLikes(@NotNull Long postID, @NotNull Long userID) {
         Optional<Post> post = postRepository.findById(postID);
         post.ifPresent(value -> postRepository.save(value.decNumberLikes()));
+        postLikeService.deleteLike(postID, userID);
+    }
+
+    public boolean likeExists(@NotNull Long postID, @NotNull Long userID) {
+        return postLikeService.likeExists(postID, userID);
     }
 
     public void deletePost(@NotNull Long postID) {
