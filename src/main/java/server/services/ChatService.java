@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.models.Chat;
 import server.repositories.ChatRepository;
+import server.responses.GetUserResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,10 +14,12 @@ import java.util.stream.Collectors;
 public class ChatService {
 
     private final ChatRepository chatRepository;
+    private final UserService userService;
 
     @Autowired
-    public ChatService(ChatRepository chatRepository) {
+    public ChatService(ChatRepository chatRepository, UserService userService) {
         this.chatRepository = chatRepository;
+        this.userService = userService;
     }
 
     public void addChat(@NotNull Long firstID, @NotNull Long secondID) {
@@ -24,13 +27,14 @@ public class ChatService {
         chatRepository.save(new Chat(secondID, firstID));
     }
 
-    public List<Long> getChats(@NotNull Long userID,
-                               @NotNull Long offset,
-                               @NotNull Long count) {
+    public List<GetUserResponse> getChats(@NotNull Long userID,
+                                          @NotNull Long offset,
+                                          @NotNull Long count) {
         return chatRepository.findAllByFromId(userID).stream().
                 map(Chat::getToId).
                 skip(offset).
                 limit(count).
+                map(userService::getUserById).
                 collect(Collectors.toList());
     }
 
