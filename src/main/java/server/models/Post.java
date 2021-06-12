@@ -11,11 +11,11 @@ import javax.persistence.Id;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long authorId;    // unchanged
-    private String date;      // unchanged
+    private Long authorId;
+    private String date;
     private String description;
     private String pictureName;    // name in the amazon s3 database
 

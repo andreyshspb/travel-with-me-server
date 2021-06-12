@@ -7,6 +7,8 @@ public class GetUserResponse {
     private final Long userID;
     private final String firstName;
     private final String lastName;
+    private final String description;
+    private final String location;
     private final String email;
     private final String avatar;
     private final int followersNumber;
@@ -16,6 +18,8 @@ public class GetUserResponse {
         this.userID = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.description = user.getDescription();
+        this.location = user.getLocation();
         this.email = user.getEmail();
         this.avatar = avatar;
         this.followersNumber = user.getFollowersNumber();
@@ -32,6 +36,14 @@ public class GetUserResponse {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLocation() {
+        return location;
     }
 
     public String getEmail() {

@@ -11,12 +11,14 @@ import javax.persistence.Id;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;    // unchanged
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String firstName = null;
     private String lastName = null;
-    private String email = null;    // unchanged
+    private String description = null;
+    private String location = null;
+    private String email = null;
     private String avatar = null;    // name file in the amazon s3 database
     private int followersNumber = 0;
     private int followingsNumber = 0;
@@ -37,6 +39,14 @@ public class User {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLocation() {
+        return location;
     }
 
     public String getEmail() {
@@ -63,6 +73,8 @@ public class User {
     public User setAll(UserEditRequest user) {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.description = user.getDescription();
+        this.location = user.getLocation();
         return this;
     }
 
