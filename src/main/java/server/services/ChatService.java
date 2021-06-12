@@ -27,6 +27,17 @@ public class ChatService {
         chatRepository.save(new Chat(secondID, firstID));
     }
 
+    public void deleteChat(@NotNull Long firstID, @NotNull Long secondID) {
+        Long chatA = getChat(firstID, secondID);
+        if (chatA != null) {
+            chatRepository.deleteById(chatA);
+        }
+        Long chatB = getChat(secondID, firstID);
+        if (chatB != null) {
+            chatRepository.deleteById(chatB);
+        }
+    }
+
     public List<GetUserResponse> getChats(@NotNull Long userID,
                                           @NotNull Long offset,
                                           @NotNull Long count) {
@@ -36,6 +47,15 @@ public class ChatService {
                 limit(count).
                 map(userService::getUserById).
                 collect(Collectors.toList());
+    }
+
+    private Long getChat(@NotNull Long fromID, @NotNull Long toID) {
+        for (Chat chat : chatRepository.findAllByFromId(fromID)) {
+            if (toID.equals(chat.getToId())) {
+                return chat.getId();
+            }
+        }
+        return null;
     }
 
 }

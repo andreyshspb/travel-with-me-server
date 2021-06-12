@@ -22,6 +22,10 @@ public class Chat {
         this.toId = toId;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Long getFromId() {
         return fromId;
     }
