@@ -133,9 +133,9 @@ public class PostService {
         for (var markerRequest : markers) {
             Marker marker = new Marker(markerRequest, postID, index);
             markerRepository.save(marker);
-            for (var photo : markerRequest.getPhotos()) {
+            for (String photo : markerRequest.getPhotos()) {
                 String pictureName = marker.getId().toString() + "_" + Integer.valueOf(index).toString();
-                storageService.uploadFile(pictureName, photo.getPhoto());
+                storageService.uploadFile(pictureName, photo);
                 markerPhotoRepository.save(new MarkerPhoto(marker.getId(), pictureName));
             }
             index += 1;

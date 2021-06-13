@@ -1,5 +1,7 @@
 package server.requests;
 
+import java.util.List;
+
 public class MarkerCreateRequest {
 
     private String name;
@@ -7,7 +9,7 @@ public class MarkerCreateRequest {
     private double latitude;
     private double longitude;
 
-    private Iterable<PhotoCreateRequest> photos;
+    private List<String> photos;
 
     public String getName() {
         return name;
@@ -25,7 +27,7 @@ public class MarkerCreateRequest {
         return longitude;
     }
 
-    public Iterable<PhotoCreateRequest> getPhotos() {
+    public List<String> getPhotos() {
         return photos;
     }
 }
