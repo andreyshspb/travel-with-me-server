@@ -41,12 +41,17 @@ public class ChatService {
     public List<GetUserResponse> getChats(@NotNull Long userID,
                                           @NotNull Long offset,
                                           @NotNull Long count) {
-        return chatRepository.findAllByFromId(userID).stream().
-                map(Chat::getToId).
-                skip(offset).
-                limit(count).
-                map(userService::getUserById).
-                collect(Collectors.toList());
+        return getChatsIDs(userID).stream()
+                .skip(offset)
+                .limit(count)
+                .map(userService::getUserById)
+                .collect(Collectors.toList());
+    }
+
+    public List<Long> getChatsIDs(@NotNull Long userID) {
+        return chatRepository.findAllByFromId(userID).stream()
+                .map(Chat::getToId)
+                .collect(Collectors.toList());
     }
 
     private Long getChat(@NotNull Long fromID, @NotNull Long toID) {

@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface PostRepository extends CrudRepository<Post, Long> {
 
+    List<Post> findAll();
     List<Post> findAllByAuthorId(Long authorId);
 
 }

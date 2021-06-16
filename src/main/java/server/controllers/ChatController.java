@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.responses.GetUserResponse;
 import server.services.ChatService;
+import server.services.SearchService;
 
 import java.util.List;
 
@@ -12,10 +13,12 @@ import java.util.List;
 public class ChatController {
 
     private final ChatService chatService;
+    private final SearchService searchService;
 
     @Autowired
-    public ChatController(ChatService chatService) {
+    public ChatController(ChatService chatService, SearchService searchService) {
         this.chatService = chatService;
+        this.searchService = searchService;
     }
 
     @PostMapping("/add_chat")
@@ -35,5 +38,13 @@ public class ChatController {
                                           @RequestParam @NotNull Long offset,
                                           @RequestParam @NotNull Long count) {
         return chatService.getChats(userID, offset, count);
+    }
+
+    @GetMapping("/search_chats")
+    public List<GetUserResponse> searchChats(@RequestParam @NotNull Long myID,
+                                             @RequestParam @NotNull String message,
+                                             @RequestParam @NotNull Long offset,
+                                             @RequestParam @NotNull Long count) {
+        return searchService.searchChats(myID, message, offset, count);
     }
 }

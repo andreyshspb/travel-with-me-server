@@ -28,6 +28,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUser(@NotNull Long userID) {
+        return userRepository.findById(userID).orElse(null);
+    }
+
     public GetUserResponse getUserById(@NotNull Long userID) {
         User user = userRepository.findById(userID).orElse(null);
         if (user != null) {
