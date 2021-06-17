@@ -35,11 +35,7 @@ public class UserService {
     public GetUserResponse getUserById(@NotNull Long userID) {
         User user = userRepository.findById(userID).orElse(null);
         if (user != null) {
-            String avatar = null;
-            if (user.getAvatar() != null) {
-                avatar = storageService.downloadFile(user.getAvatar());
-            }
-            return new GetUserResponse(user, avatar);
+            return new GetUserResponse(user);
         }
         return null;
     }

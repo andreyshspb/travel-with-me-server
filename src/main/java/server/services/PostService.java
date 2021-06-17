@@ -65,11 +65,7 @@ public class PostService {
         Optional<Post> maybePost = postRepository.findById(postID);
         if (maybePost.isPresent()) {
             Post post = maybePost.get();
-            String picture = null;
-            if (post.getPictureName() != null) {
-                picture = storageService.downloadFile(post.getPictureName());
-            }
-            return new GetPostResponse(post, getMarkers(post.getId()), picture);
+            return new GetPostResponse(post, getMarkers(post.getId()));
         }
         return null;
     }
@@ -147,8 +143,7 @@ public class PostService {
         for (Marker marker : markerRepository.findAllByPostId(postID)) {
             List<String> photos = new ArrayList<>();
             for (MarkerPhoto photo : markerPhotoRepository.findAllByMarkerId(marker.getId())) {
-                String picture= storageService.downloadFile(photo.getKeyName());
-                photos.add(picture);
+                photos.add(photo.getKeyName());
             }
             markers.add(new GetMarkerResponse(marker, photos));
         }

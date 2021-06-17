@@ -14,14 +14,14 @@ public class GetUserResponse {
     private final int followersNumber;
     private final int followingsNumber;
 
-    public GetUserResponse(User user, String avatar) {
+    public GetUserResponse(User user) {
         this.userID = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.description = user.getDescription();
         this.location = user.getLocation();
         this.email = user.getEmail();
-        this.avatar = avatar;
+        this.avatar = user.getAvatar();
         this.followersNumber = user.getFollowersNumber();
         this.followingsNumber = user.getFollowingsNumber();
     }

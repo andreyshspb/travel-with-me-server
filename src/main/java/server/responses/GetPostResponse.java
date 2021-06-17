@@ -15,12 +15,12 @@ public class GetPostResponse {
 
     private final List<GetMarkerResponse> markers;
 
-    public GetPostResponse(Post post, List<GetMarkerResponse> markers, String picture) {
+    public GetPostResponse(Post post, List<GetMarkerResponse> markers) {
         this.postId = post.getId();
         this.authorId = post.getAuthorId();
         this.date = post.getDate();
         this.description = post.getDescription();
-        this.picture = picture;
+        this.picture = post.getPictureName();
         this.numberLikes = post.getNumberLikes();
         this.markers = markers;
     }
